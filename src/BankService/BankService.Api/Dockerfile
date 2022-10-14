@@ -18,4 +18,4 @@ RUN dotnet publish "BankService.Api.csproj" -c Release -o /app/publish /p:UseApp
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BankService.Api.dll"]
+ENTRYPOINT ["dotnet", "Bankr.BankService.Api.dll"]
