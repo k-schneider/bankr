@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+
+  redis:
+    image: redis:alpine
+
+  seq:
+    image: datalust/seq:latest
+
+  zipkin:
+    image: openzipkin/zipkin-slim
+
+  bank-service:
+    image: ${DOCKER_REGISTRY-}bank.service
+    build:
+      context: .
+      dockerfile: src/BankService/BankService.Api/Dockerfile
+    depends_on:
+      - redis
+      - dapr-placement
+
+  bank-service-dapr:
+    image: "daprio/daprd:1.8.5"
+    depends_on:
+      - bank-service
+    network_mode: "service:bank-service"
+
+  webstatus:
+    image: xabarilcoding/healthchecksui:5.0.0
+
+  dapr-placement:
+    image: "daprio/dapr:1.8.5"

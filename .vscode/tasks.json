@@ -1,0 +1,46 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "bank-service-dotnet-build",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+          "build",
+          "${workspaceFolder}/src/BankService/BankService.Api/BankService.Api.csproj",
+          "/property:GenerateFullPaths=true",
+          "/consoleloggerparameters:NoSummary"
+        ],
+        "problemMatcher": "$msCompile"
+      },
+      {
+        "label": "bank-service-dotnet-watch",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+          "watch",
+          "run",
+          "${workspaceFolder}/src/BankService/BankService.Api/BankService.Api.csproj",
+          "/property:GenerateFullPaths=true",
+          "/consoleloggerparameters:NoSummary"
+        ],
+        "problemMatcher": "$msCompile",
+        "options": {
+          "cwd": "${workspaceFolder}/src/BankService/BankService.Api"
+        }
+      },
+      {
+        "label": "bank-service-daprd-debug",
+        "type": "daprd",
+        "appId": "bank-service",
+        "appPort": 5101,
+        "dependsOn": ["bank-service-dotnet-build"]
+      },
+      {
+        "label": "bank-service-daprd-down",
+        "type": "daprd-down",
+        "appId": "bank-service"
+      }
+    ]
+  }
+  

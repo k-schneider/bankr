@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch Bank Service with Dapr",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "bank-service-daprd-debug",
+        "program": "${workspaceFolder}/src/BankService/BankService.Api/bin/Debug/net6.0/Bankr.BankService.Api.dll",
+        "cwd": "${workspaceFolder}/src/BankService/BankService.Api",
+        "postDebugTask": "bank-service-daprd-down"
+      },
+      {
+        "name": ".NET Core Attach",
+        "type": "coreclr",
+        "request": "attach"
+      }
+    ],
+    "compounds": [
+      {
+        "name": "Launch Bankr",
+        "configurations": [
+          "Launch Bank Service with Dapr"
+        ]
+      }
+    ]
+  }
+  
