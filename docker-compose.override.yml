@@ -31,7 +31,7 @@ services:
       "-app-port", "80",
       "-placement-host-address", "dapr-placement:50000",
       "-components-path", "/components",
-      "-config", "/configuration/scrummy-config.yaml"]
+      "-config", "/configuration/bankr-config.yaml"]
     volumes:
       - "./dapr/components/:/components"
       - "./dapr/configuration/:/configuration"

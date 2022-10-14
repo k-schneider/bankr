@@ -1,32 +1,49 @@
+var appName = "Bank Service";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.AddCustomSerilog();
+builder.AddCustomSwagger();
+builder.AddCustomHealthChecks();
+builder.AddCustomActors();
+
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddDaprClient();
+builder.Services.AddFastEndpoints();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
-var summaries = new[]
+app.MapGet("/", () => Results.LocalRedirect("~/swagger"));
+app.UseCustomSwagger();
+app.UseCloudEvents();
+app.MapActorsHandlers();
+app.MapSubscribeHandler();
+app.MapHealthChecks("/hc", new HealthCheckOptions
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateTime.Now.AddDays(index),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    Predicate = _ => true,
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
-
-app.Run();
-
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
+app.MapHealthChecks("/liveness", new HealthCheckOptions
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    Predicate = r => r.Name.Contains("self")
+});
+app.UseCustomFastEndpoints();
+
+try
+{
+    app.Logger.LogInformation("Starting web host ({ApplicationName})...", appName);
+    app.Run();
+    return 0;
 }
+catch (Exception ex)
+{
+    app.Logger.LogCritical(ex, "Host terminated unexpectedly ({ApplicationName})...", appName);
+    return 1;
+}
+finally
+{
+    Serilog.Log.CloseAndFlush();
+}
+
+public partial class Program { }

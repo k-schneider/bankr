@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BankService", "BankService"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{612C7241-46B2-4663-9C7A-020975EDF733}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{CCEE4E9C-924E-4E50-9B46-EE7C8D2E9228}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Healthchecks", "src\BuildingBlocks\Healthchecks\Healthchecks.csproj", "{057ABEA0-BAF8-4050-B4FC-318AC9027767}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,12 +32,17 @@ Global
 		{612C7241-46B2-4663-9C7A-020975EDF733}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{612C7241-46B2-4663-9C7A-020975EDF733}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{612C7241-46B2-4663-9C7A-020975EDF733}.Release|Any CPU.Build.0 = Release|Any CPU
+		{057ABEA0-BAF8-4050-B4FC-318AC9027767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{057ABEA0-BAF8-4050-B4FC-318AC9027767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{057ABEA0-BAF8-4050-B4FC-318AC9027767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{057ABEA0-BAF8-4050-B4FC-318AC9027767}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C7B65E09-D185-47DA-BFE9-FC3D194D0DA0} = {FAD5B54F-6E00-4B4E-9B46-7621866B5922}
+		{057ABEA0-BAF8-4050-B4FC-318AC9027767} = {CCEE4E9C-924E-4E50-9B46-EE7C8D2E9228}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4DC38D72-103C-4F29-AC64-10E0905CEE7A}
