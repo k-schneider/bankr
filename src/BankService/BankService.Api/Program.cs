@@ -6,6 +6,7 @@ builder.AddCustomSerilog();
 builder.AddCustomSwagger();
 builder.AddCustomHealthChecks();
 builder.AddCustomActors();
+builder.AddCustomEventStore();
 
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddDaprClient();

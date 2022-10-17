@@ -1,30 +1,30 @@
 namespace Bankr.BankService.Api.Endpoints.BankAccount;
 
 /// <summary>
-/// Deposit money into a bank account.
+/// Withdraw money from a bank account.
 /// </summary>
-public class DepositEndpoint : Endpoint<DepositCommand>
+public class WithdrawlEndpoint : Endpoint<WithdrawlCommand>
 {
     private readonly IActorProxyFactory _actorProxyFactory;
 
-    public DepositEndpoint(IActorProxyFactory actorProxyFactory)
+    public WithdrawlEndpoint(IActorProxyFactory actorProxyFactory)
     {
         _actorProxyFactory = actorProxyFactory;
     }
 
     public override void Configure()
     {
-        Post("/bank-accounts/{bankAccountId}/deposit");
+        Post("/bank-accounts/{bankAccountId}/withdrawl");
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(DepositCommand command, CancellationToken cancellationToken)
+    public override async Task HandleAsync(WithdrawlCommand command, CancellationToken cancellationToken)
     {
         var bankAccount = _actorProxyFactory.CreateActorProxy<IBankAccountActor>(
             new ActorId(command.BankAccountId),
             nameof(BankAccountActor));
 
-        await bankAccount.Deposit(
+        await bankAccount.Withdrawl(
             command.Amount,
             cancellationToken);
 
@@ -32,14 +32,14 @@ public class DepositEndpoint : Endpoint<DepositCommand>
     }
 }
 
-public class DepositSummary: Summary<DepositEndpoint>
+public class WithdrawlSummary: Summary<WithdrawlEndpoint>
 {
-    public DepositSummary()
+    public WithdrawlSummary()
     {
-        Response(204, "deposit successful");
+        Response(204, "withdrawl successful");
         Response(404, "account not found");
         Response<InternalErrorResponse>(500, "server error");
-        ExampleRequest = new DepositCommand
+        ExampleRequest = new WithdrawlCommand
         {
             Amount = 50m
         };
@@ -47,9 +47,9 @@ public class DepositSummary: Summary<DepositEndpoint>
 }
 
 /// <summary>
-/// The deposit command.
+/// The withdrawl command.
 /// </summary>
-public class DepositCommand
+public class WithdrawlCommand
 {
     /// <summary>
     /// ID of the bank account to deposit to.
@@ -57,7 +57,7 @@ public class DepositCommand
     public string BankAccountId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Amount to deposit.
+    /// Amount to withdraw.
     /// </summary>
     public decimal Amount { get; set; }
 }

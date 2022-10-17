@@ -11,6 +11,9 @@ services:
   zipkin:
     image: openzipkin/zipkin-slim
 
+  eventstore:
+    image: eventstore/eventstore:20.10.2-buster-slim
+
   bank-service:
     image: ${DOCKER_REGISTRY-}bank.service
     build:
@@ -19,6 +22,7 @@ services:
     depends_on:
       - redis
       - dapr-placement
+      - eventstore
 
   bank-service-dapr:
     image: "daprio/daprd:1.8.5"

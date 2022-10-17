@@ -13,6 +13,13 @@ public static class ProgramExtensions
             options.Actors.RegisterActor<BankAccountActor>();
         });
 
+    public static void AddCustomEventStore(this WebApplicationBuilder builder)
+    {
+        var settings = EventStoreClientSettings.Create(builder.Configuration["EventStore:ConnectionString"]);
+        var client = new EventStoreClient(settings);
+        builder.Services.AddSingleton(client);
+    }
+
     public static void AddCustomHealthChecks(this WebApplicationBuilder builder) =>
         builder.Services.AddHealthChecks()
             .AddCheck("self", () => HealthCheckResult.Healthy())
