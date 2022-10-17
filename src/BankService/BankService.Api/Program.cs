@@ -15,7 +15,6 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.MapGet("/", () => Results.LocalRedirect("~/swagger"));
-app.UseCustomSwagger();
 app.UseCloudEvents();
 app.MapActorsHandlers();
 app.MapSubscribeHandler();
@@ -28,7 +27,11 @@ app.MapHealthChecks("/liveness", new HealthCheckOptions
 {
     Predicate = r => r.Name.Contains("self")
 });
-app.UseCustomFastEndpoints();
+app.UseDefaultExceptionHandler();
+app.UseAuthorization();
+app.UseFastEndpoints(c => c.Endpoints.ShortNames = true);
+app.UseOpenApi();
+app.UseSwaggerUi3(c => c.ConfigureDefaults());
 
 try
 {
