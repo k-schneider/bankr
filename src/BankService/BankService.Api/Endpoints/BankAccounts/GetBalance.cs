@@ -1,4 +1,4 @@
-namespace Bankr.BankService.Api.Endpoints.BankAccount;
+namespace Bankr.BankService.Api.Endpoints.BankAccounts;
 
 /// <summary>
 /// Get balance for a specific bank account.
