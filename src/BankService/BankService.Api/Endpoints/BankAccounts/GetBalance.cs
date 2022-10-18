@@ -26,9 +26,12 @@ public class GetBalanceEndpoint : Endpoint<GetBalanceQuery>
 
         var balance = await bankAccount.Balance(cancellationToken);
 
-        await SendAsync(new BalanceDto {
-            Balance = balance
-        }, 200, cancellationToken);
+        await SendOkAsync(
+            new BalanceDto
+            {
+                Balance = balance
+            },
+            cancellationToken);
     }
 }
 
