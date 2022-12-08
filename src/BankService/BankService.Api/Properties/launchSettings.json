@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "GameService.Api": {
+    "BankService.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

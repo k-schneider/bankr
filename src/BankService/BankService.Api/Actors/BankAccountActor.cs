@@ -7,7 +7,6 @@ public class BankAccountActor : Actor, IBankAccountActor
 {
     private readonly EventStoreClient _eventStore;
     private string _streamName = string.Empty;
-    private StreamPosition _streamPosition;
     private BankAccountState _state = new();
 
     public BankAccountActor(ActorHost host, EventStoreClient eventStore)
@@ -45,22 +44,20 @@ public class BankAccountActor : Actor, IBankAccountActor
                     break;
             }
         }
-
-        _streamPosition = readResult.LastStreamPosition.GetValueOrDefault();
     }
 
     public async Task Deposit(decimal amount, CancellationToken cancellationToken = default)
     {
         var @event = new Deposited { Amount = amount };
-        _state.Apply(@event);
         await AppendEvent(@event, cancellationToken);
+        _state.Apply(@event);
     }
 
     public async Task Withdrawl(decimal amount, CancellationToken cancellationToken = default)
     {
         var @event = new Withdrawn { Amount = amount };
-        _state.Apply(@event);
         await AppendEvent(@event, cancellationToken);
+        _state.Apply(@event);
     }
 
     public Task<decimal> Balance(CancellationToken cancellationToken = default)
@@ -73,14 +70,15 @@ public class BankAccountActor : Actor, IBankAccountActor
         var data = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event));
         var typeName = @event.GetType().Name;
         var eventData = new EventData(Uuid.NewUuid(), typeName, data);
+        var expectedRevision = _state.Version == default
+            ? StreamRevision.None
+            : StreamRevision.FromInt64(_state.Version - 1);
 
         await _eventStore.AppendToStreamAsync(
             _streamName,
-            _streamPosition == default ? StreamRevision.None : StreamRevision.FromStreamPosition(_streamPosition),
+            expectedRevision,
             new[] { eventData },
             cancellationToken: cancellationToken);
-
-        _streamPosition.Next();
     }
 
     private static BankAccountEvent DeserializeEvent(EventRecord eventRecord)

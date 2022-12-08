@@ -25,7 +25,7 @@ services:
       - eventstore
 
   bank-service-dapr:
-    image: "daprio/daprd:1.8.5"
+    image: "daprio/daprd:1.9.5"
     depends_on:
       - bank-service
     network_mode: "service:bank-service"
@@ -34,4 +34,4 @@ services:
     image: xabarilcoding/healthchecksui:5.0.0
 
   dapr-placement:
-    image: "daprio/dapr:1.8.5"
+    image: "daprio/dapr:1.9.5"
